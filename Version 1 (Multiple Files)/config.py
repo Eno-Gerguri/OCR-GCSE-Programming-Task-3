@@ -1,1 +1,2 @@
-user_exists = False
+username_exists = False
+password_exists = False
