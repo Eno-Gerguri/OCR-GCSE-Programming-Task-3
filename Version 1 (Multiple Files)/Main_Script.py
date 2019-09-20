@@ -120,14 +120,15 @@ class Database_Manager:
 
 class Authenticate_User(Database_Manager):
 
-    def starting_page(self):
+    def starting_page(self, player_logging_in):
         """
         Is the first page that opens when the program is run. Returns a string, "login" or "createanaccount" depending
         on what they typed in.
+        :param player_logging_in: STRING
         :return: STRING
         """
 
-        print("Welcome!\n\n")
+        print("Welcome, Player " + player_logging_in + "\n\n")
         option_picked = input("Log In\n\nCreate an Account\n\n")
         print("\n\n")
 
@@ -139,11 +140,12 @@ class Authenticate_User(Database_Manager):
 
         else:
             print("\n\nSorry that is invalid. Please check your spelling.\n\n")
-            self.starting_page()
+            return False
 
     def login_in_players(self, player_logging_in):
         """
         Logs Player 1 into the game by checking if their typed username and password exists from an SQL Database.
+        :param player_logging_in: STRING
         :return: BOOLEAN
         """
 
@@ -161,11 +163,11 @@ class Authenticate_User(Database_Manager):
 
             else:
                 print("\n\nSorry that Password is incorrect. Please check your spelling.\n\n")
-                self.starting_page()
+                return False
 
         else:
             print("\n\nSorry that Username does not exist. Please check your spelling.\n\n")
-            self.starting_page()
+            return False
 
 
 # ======================================================================================================================
@@ -173,8 +175,35 @@ class Authenticate_User(Database_Manager):
 
 Authenticate_User = Authenticate_User()
 
-if Authenticate_User.login_in_players("1"):
-    print("The password thing worked")
+
+# ======================================================================================================================
+# ======================================================================================================================
+# Main Loop
+
+logged_in_users = False
+
+while logged_in_users is False:
+    if Authenticate_User.starting_page("1") == "login":
+
+        if Authenticate_User.login_in_players("1"):
+
+            if Authenticate_User.starting_page("2") == "login":
+
+                if Authenticate_User.login_in_players("2"):
+                    pass
+                    # Start the game menu
+
+            elif Authenticate_User.starting_page("2") == "createanaccount":
+                pass
+
+    elif Authenticate_User.starting_page("1") == "createanaccount":
+        pass
+
+
+# ======================================================================================================================
+# ======================================================================================================================
 
 cur_users.close()
 conn_users.close()
+
+
