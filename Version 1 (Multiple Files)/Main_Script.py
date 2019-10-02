@@ -94,8 +94,10 @@ class Database_Manager:
             for i, tuple_line in enumerate(cur_users.fetchall()):  # Each record in the database comes in a tuple
                 if tuple_line[0] == username:  # tuple[0] gives the first value in the database, which is the username
                     return True, tuple_line
+                    # Return the tuple line and it being true for the password check to detect if it is the same user
+                    # This is as the username and password will be on in the same tuple in the SQL Database
 
-            return False, None
+            return False, None  # Returns "None" as we need the return in a tuple format
 
     def check_if_password_exists(self, password, username_tuple):
         """
@@ -110,6 +112,8 @@ class Database_Manager:
 
             for i, tuple_line in enumerate(cur_users.fetchall()):  # Each record in the database comes in a tuple
                 if username_tuple[1] == password:  # tuple[1] gives the second value in the tuple, which is the password
+                    # We use the username_tuple as we need to make sure it is the same username
+                    # This is so users can have the same passwords but cannot have the same usernames
                     return True
 
             return False
@@ -128,29 +132,29 @@ class Authenticate_User(Database_Manager):
         :return: STRING
         """
 
-        print("Welcome, Player " + player_logging_in + "\n\n")
-        option_picked = input("Log In\n\nCreate an Account\n\n")
+        print("Welcome, Player " + player_logging_in + "\n\n")  # Prints title to show user which user is logging in
+        option_picked = input("Log In\n\nCreate an Account\n\n")  # Gets the option from user input
         print("\n\n")
 
         if option_picked.lower().strip().replace(" ", "") == "login":
-            return option_picked.lower().strip().replace(" ", "")
+            return option_picked.lower().strip().replace(" ", "")  # Returns "login"
 
         elif option_picked.lower().strip().replace(" ", "") == "createanaccount":
-            return option_picked.lower().strip().replace(" ", "")
+            return option_picked.lower().strip().replace(" ", "")  # Returns "createanaccount"
 
         else:
             print("\n\nSorry that is invalid. Please check your spelling.\n\n")
-            return False
+            return False  # If the input is not an option it returns False
 
     def login_in_players(self, player_logging_in):
         """
-        Logs Player 1 into the game by checking if their typed username and password exists from an SQL Database.
+        Logs Player 1 and 2 into the game by checking if their typed username and password exists from an SQL Database.
         :param player_logging_in: STRING
         :return: BOOLEAN
         """
 
         print("Login Page\n")
-        print("Player " + player_logging_in + ":\n\n")
+        print("Player " + player_logging_in + ":\n\n")  # Prints title to show user which user is logging in
         entered_username = input("Enter your Username: ")
 
         if Database_Manager.check_if_username_exists(self, entered_username)[0]:
@@ -172,6 +176,7 @@ class Authenticate_User(Database_Manager):
 
 # ======================================================================================================================
 # ======================================================================================================================
+# Initialisation
 
 Authenticate_User = Authenticate_User()
 
