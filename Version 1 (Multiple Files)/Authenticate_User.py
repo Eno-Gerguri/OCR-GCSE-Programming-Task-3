@@ -1,4 +1,5 @@
 from Database_Manager import Login_System_Database_Manager
+from validate_email import validate_email
 
 
 class Authenticate_User(Login_System_Database_Manager):
@@ -79,9 +80,14 @@ class Authenticate_User(Login_System_Database_Manager):
             new_password = input("Please enter your Password: ")
             new_password_check = input("Please Re-enter your Password: ")
 
-            if new_password == new_password_check:
-                new_email_address = input("Please enter your Email Address (optional, type 'no' if you do not want "
-                                          "to do so): ")
+            if new_password == new_password_check:  # If the passwords match
+                new_email_address = input("Please enter your Email Address (optional, hit, 'Enter': ")
+
+                if validate_email(new_email_address):
+                    # emails is correct
+
+                else:
+                    # email is not correct and they or they do not want an email
 
         else:
             print("\nSorry that username is already taken. Please try a different one.\n\n")

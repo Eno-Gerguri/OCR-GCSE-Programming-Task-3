@@ -9,38 +9,34 @@ class Login_System_Database_Manager:
     # ==================================================================================================================
     # ==================================================================================================================
 
-    def __init__(self):
+    def __init__(self, conn_users, cur_users):
         """
         Creates SQL tables if they do not exist.
         """
 
-        conn_users = sqlite3.connect("users.db")
-        cur_users = conn_users.cursor()
-
         with conn_users:
             cur_users.execute("CREATE TABLE IF NOT EXISTS users(usernames TEXT, passwords TEXT, email_address TEXT)")
 
-        cur_users.close()
-        conn_users.close()
+    # ==================================================================================================================
+    # ==================================================================================================================
+
+    def enter_account_details(self, conn_users, cur_users, username, password, email_address):
+
+        with conn_users:
+            cur_users.execute("INSERT INTO users (usernames, passwords, email_address) VALUES (?, ?, ?)",
+                              (username, password, email_address))
 
     # ==================================================================================================================
     # ==================================================================================================================
 
-    def enter_account_details(self, username, password, email_address):
-        pass
-
-    # ==================================================================================================================
-    # ==================================================================================================================
-
-    def check_if_username_exists(self, username):
+    def check_if_username_exists(self, conn_users, cur_users, username):
         """
         Checks if the username is in the list. Returns, "True" if it is and, "False" if it is not.
         :param username: STRING
+        :param conn_users: SQL CONNECTION
+        :param cur_users: SQL CURSOR
         :return: BOOLEAN
         """
-
-        conn_users = sqlite3.connect("users.db")
-        cur_users = conn_users.cursor()
 
         with conn_users:
             cur_users.execute("SELECT * FROM users")
@@ -51,24 +47,21 @@ class Login_System_Database_Manager:
                     # Return the tuple line and it being true for the password check to detect if it is the same user
                     # This is as the username and password will be in the same tuple in the SQL Database
 
-        cur_users.close()
-        conn_users.close()
         return False, None  # Returns "None" as we need the return in a tuple format
 
     # ==================================================================================================================
     # ==================================================================================================================
 
-    def check_if_password_exists(self, password, username_tuple):
+    def check_if_password_exists(self, conn_users, cur_users, password, username_tuple):
         """
         Checks if the password is in the list. Returns, "True" if it is and, "False" if it is not.
         Takes in the username_tuple to check if we are checking the password for the correct user
+        :param conn_users: SQL CONNECTION
+        :param cur_users: SQL CURSOR
         :param password: STRING
         :param username_tuple: INT
         :return: BOOLEAN
         """
-
-        conn_users = sqlite3.connect("users.db")
-        cur_users = conn_users.cursor()
 
         with conn_users:
             cur_users.execute("SELECT * FROM users")
@@ -78,12 +71,8 @@ class Login_System_Database_Manager:
                 if username_tuple[1] == password:  # tuple[1] gives the second value in the tuple, which is the password
                     # We use the username_tuple as we need to make sure it is the same username
                     # This is so users can have the same passwords but cannot have the same usernames
-                    cur_users.close()
-                    conn_users.close()
                     return True
 
-            cur_users.close()
-            conn_users.close()
             return False
 
     # ==================================================================================================================
