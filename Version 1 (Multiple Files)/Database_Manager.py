@@ -11,7 +11,10 @@ class Login_System_Database_Manager:
 
     def __init__(self, conn_users, cur_users):
         """
-        Creates SQL tables if they do not exist.
+        Creates SQL, "usernames_and_passwords" database if it does not exist.
+        :param conn_users: SQL CONNECTION
+        :param cur_users: SQL CURSOR
+        :return: NONE
         """
 
         with conn_users:
@@ -21,6 +24,13 @@ class Login_System_Database_Manager:
     # ==================================================================================================================
 
     def enter_account_details(self, conn_users, cur_users, username, password, email_address):
+        """
+        :param conn_users: SQL CONNECTION
+        :param cur_users: SQL CURSOR
+        :param username: STRING
+        :param password: STRING
+        :param email_address: STRING
+        """
 
         with conn_users:
             cur_users.execute("INSERT INTO users (usernames, passwords, email_address) VALUES (?, ?, ?)",
@@ -32,9 +42,9 @@ class Login_System_Database_Manager:
     def check_if_username_exists(self, conn_users, cur_users, username):
         """
         Checks if the username is in the list. Returns, "True" if it is and, "False" if it is not.
-        :param username: STRING
         :param conn_users: SQL CONNECTION
         :param cur_users: SQL CURSOR
+        :param username: STRING
         :return: BOOLEAN
         """
 
@@ -78,5 +88,5 @@ class Login_System_Database_Manager:
     # ==================================================================================================================
     # ==================================================================================================================
 
-    def check_if_email_address_exists(self, email_address):
+    def check_if_email_address_exists(self, conn_users, cur_users, email_address):
         pass
