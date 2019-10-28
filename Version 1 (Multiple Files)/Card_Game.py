@@ -1,8 +1,6 @@
 # ======================================================================================================================
 # ======================================================================================================================
 # Initialise Deck and all the cards within it
-import sqlite3
-import Database_Manager
 
 class Card:
     """
@@ -54,12 +52,5 @@ deck = [red_card_1, red_card_2, red_card_3, red_card_4, red_card_5,
         yellow_card_1, yellow_card_2, yellow_card_3, yellow_card_4, yellow_card_5,
         yellow_card_6, yellow_card_7, yellow_card_8, yellow_card_9, yellow_card_10]
 
-
 # ======================================================================================================================
 # ======================================================================================================================
-
-
-conn_users = sqlite3.connect("users.db")
-cur_users = conn_users.cursor()
-
-Database_Manager.Login_System_Database_Manager().enter_account_details("Eno", "Gerguri", "testemail")

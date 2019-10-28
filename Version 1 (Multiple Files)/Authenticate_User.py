@@ -78,6 +78,7 @@ class Authenticate_User(Login_System_Database_Manager):
         Creates the user an account by asking them for a: username, password and email address(optional)
         :param conn_users: SQL CONNECTION
         :param cur_users: SQL CURSOR
+        :return: NONE
         """
 
         print("Create Account Page\n")
@@ -113,7 +114,7 @@ class Authenticate_User(Login_System_Database_Manager):
                                               "\nEmail Address: " + corrected_email_address)
                     # Asks user if their details are correct
 
-                    if check_for_details.strip().lower().replace(" ", "") == "yes":
+                    if check_for_details.strip().lower().replace(" ", "") == "yes":  # If details are correct
                         Login_System_Database_Manager().enter_account_details(conn_users, cur_users, new_username,
                                                                               new_password, new_email_address)
 
@@ -144,6 +145,6 @@ class Authenticate_User(Login_System_Database_Manager):
                                     print("\n\nThat email address is not valid please enter a new one.\n\n")
 
         else:
-        print("\nSorry that username is already taken. Please try a different one.\n\n")
-        self.create_player_account()
-        return
+            print("\nSorry that username is already taken. Please try a different one.\n\n")
+            self.create_player_account(conn_users, cur_users)
+            return
