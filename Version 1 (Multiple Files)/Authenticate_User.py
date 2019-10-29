@@ -84,7 +84,8 @@ class Authenticate_User(Login_System_Database_Manager):
         print("Create Account Page\n")
         new_username = input("Please enter a Username: ")
 
-        if Login_System_Database_Manager().check_if_username_exists(conn_users, cur_users, new_username)[0] is not True:
+        if Login_System_Database_Manager(conn_users, cur_users).check_if_username_exists(conn_users, cur_users,
+                                                                                         new_username)[0] is not True:
             # If username is not taken
 
             new_password = getpass("Please enter your Password: ")
@@ -111,12 +112,14 @@ class Authenticate_User(Login_System_Database_Manager):
                     check_for_details = input("Are these details correct?:\n\n" +
                                               "Username: " + corrected_username +
                                               "\nPassword: " + "*" * len(corrected_password) +
-                                              "\nEmail Address: " + corrected_email_address)
+                                              "\nEmail Address: " + corrected_email_address + "\n\n")
                     # Asks user if their details are correct
 
                     if check_for_details.strip().lower().replace(" ", "") == "yes":  # If details are correct
-                        Login_System_Database_Manager().enter_account_details(conn_users, cur_users, new_username,
-                                                                              new_password, new_email_address)
+                        Login_System_Database_Manager(conn_users, cur_users).enter_account_details\
+                                                                            (conn_users, cur_users, corrected_username,
+                                                                             corrected_password,
+                                                                             corrected_email_address)
 
                         print("\n\nSuccessfully created account!\n\n")
                         return
@@ -124,6 +127,7 @@ class Authenticate_User(Login_System_Database_Manager):
                     else:
                         incorrect_detail = input("\n\nWhich detail is incorrect?\n\nusername\npassword"
                                                  "\nemail address\n\n")  # Gets the incorrect detail
+                        print("\n")
 
                         # Gets the correct detail respectively and changes the respective, "corrected" variable
                         if incorrect_detail.strip().lower().replace(" ", "") == "username":

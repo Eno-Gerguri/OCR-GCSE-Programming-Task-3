@@ -6,7 +6,6 @@ import sqlite3
 # Initialisation
 
 
-global conn_users, cur_users
 conn_users = sqlite3.connect("users.db")
 cur_users = conn_users.cursor()
 
@@ -37,8 +36,8 @@ while logged_in_player_1 is False:
 
         # Otherwise, the while loop will begin again
 
-    elif Authenticate_User.starting_page(player_logging_in) == "createanaccount":
-        Authenticate_User.create_player_account()
+    else:  # If it returns "createanaccount"
+        Authenticate_User.create_player_account(conn_users, cur_users)
 
         # Loop will begin again to allow the user to create another account or to login with one
 
@@ -48,12 +47,12 @@ while logged_in_player_2 is False:
 
         if Authenticate_User.login_in_players(conn_users, cur_users, player_logging_in):
             # If player 2 logs in successfully
-            logged_in_player_1 = True  # Breaks out of loop
+            logged_in_player_2 = True  # Breaks out of loop
 
         # Otherwise, the while loop will begin again
 
-    elif Authenticate_User.starting_page(player_logging_in) == "createanaccount":
-        Authenticate_User.create_player_account()
+    else:  # If it returns "createanaccount"
+        Authenticate_User.create_player_account(conn_users, cur_users)
 
         # Loop will begin again to allow the user to create another account or to login with one
 
