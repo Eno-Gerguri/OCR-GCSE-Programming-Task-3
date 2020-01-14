@@ -103,4 +103,9 @@ class Login_System_Database_Manager:
     # ==================================================================================================================
 
     def check_if_email_address_exists(self, email_address):
+        """
+        TODO: Complete this function
+        :param email_address:
+        :return:
+        """
         pass

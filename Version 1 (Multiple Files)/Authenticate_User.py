@@ -11,7 +11,8 @@ class Authenticate_User(Login_System_Database_Manager):
     # ==================================================================================================================
     # ==================================================================================================================
 
-    def starting_page(self, player_logging_in):
+    @staticmethod
+    def starting_page(player_logging_in):
         """
         Is the first page that opens when the program is run. Returns a string, "login" or "createanaccount" depending
         on what they typed in.
@@ -19,7 +20,7 @@ class Authenticate_User(Login_System_Database_Manager):
         :return: STRING or BOOLEAN
         """
 
-        print("Welcome, Player " + player_logging_in + "\n\n")  # Prints title to show user which user is logging in
+        print(f"Welcome, Player {player_logging_in}\n\n")  # Prints title to show user which user is logging in
         option_picked = input("Log In\n\nCreate an Account\n\n")  # Gets the option from user input
         print("\n\n")
 
@@ -46,19 +47,20 @@ class Authenticate_User(Login_System_Database_Manager):
         """
 
         print("Login Page\n")
-        print("Player " + player_logging_in + ":\n\n")  # Prints title to show user which user is logging in
+        print(f"Player {player_logging_in}:\n\n")  # Prints title to show user which user is logging in
         entered_username = input("Enter your Username: ")
 
-        if Login_System_Database_Manager.check_if_username_exists(self, conn_users, cur_users, entered_username)[0]:
-            username_tuple = Login_System_Database_Manager.check_if_username_exists(self, conn_users, cur_users,
-                                                                                    entered_username)[1]
+        username_exists = Login_System_Database_Manager.check_if_username_exists(self, conn_users, cur_users,
+                                                                                 entered_username)
+        # 'username_exists' takes up more memory but reduces amount of calculations done in 'check_if_username_exists'
 
+        if username_exists[0]:
             # The second value that is returned is either NONE or "tuple_line" variable
 
-            entered_password = getpass("Enter your Password: ")
+            entered_password = getpass("Enter your Password: ")  # Will not be able to see the password they are typing
 
             if Login_System_Database_Manager.check_if_password_exists(self, conn_users, cur_users, entered_password,
-                                                                      username_tuple):
+                                                                      username_exists[1]):
 
                 return True
 
@@ -109,17 +111,17 @@ class Authenticate_User(Login_System_Database_Manager):
 
                 while 1:  # Quicker than using the, "True" keyword
 
-                    check_for_details = input("Are these details correct?:\n\n" +
-                                              "Username: " + corrected_username +
-                                              "\nPassword: " + "*" * len(corrected_password) +
-                                              "\nEmail Address: " + corrected_email_address + "\n\n")
+                    check_for_details = input("Are these details correct?:\n\n"
+                                              f"Username: {corrected_username}"
+                                              f"\nPassword: {'*' * len(corrected_password)}"
+                                              f"\nEmail Address: {corrected_email_address}\n\n")
                     # Asks user if their details are correct
 
                     if check_for_details.strip().lower().replace(" ", "") == "yes":  # If details are correct
                         Login_System_Database_Manager(conn_users, cur_users).enter_account_details\
-                                                                            (conn_users, cur_users, corrected_username,
-                                                                             corrected_password,
-                                                                             corrected_email_address)
+                            (conn_users, cur_users, corrected_username,
+                             corrected_password,
+                             corrected_email_address)
 
                         print("\n\nSuccessfully created account!\n\n")
                         return

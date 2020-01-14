@@ -2,6 +2,7 @@
   <dictionary name="Eno">
     <words>
       <w>createanaccount</w>
+      <w>emailaddress</w>
       <w>fernet</w>
       <w>usernames</w>
     </words>
